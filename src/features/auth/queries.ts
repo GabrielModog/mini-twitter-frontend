@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useAuthStore } from "./store"
 import apiClient from "../../lib/api-client"
-import type { LoginForm } from "./types"
+import type { LoginForm, RegisterForm } from "./types"
 import { useNavigate } from "react-router"
 
 export const useLoginMutation = () => {
@@ -24,3 +24,23 @@ export const useLoginMutation = () => {
     onSettled: () => setLoading(false),
   });
 };
+
+export const useRegisterMutation = () => {
+  const navigate = useNavigate();
+  const { setLoading, setError } = useAuthStore();
+
+  return useMutation({
+    mutationFn: async (credentials: RegisterForm) => {
+      setLoading(true);
+      const res = await apiClient.post('/auth/register', credentials)
+      return res.data
+    },
+    onSuccess: () => {
+      navigate('/')
+    },
+    onError: (err: any) => {
+      setError(err?.response?.data?.error || 'Não foi possível fazer cadastro')
+    },
+    onSettled: () => setLoading(false),
+  })
+}
