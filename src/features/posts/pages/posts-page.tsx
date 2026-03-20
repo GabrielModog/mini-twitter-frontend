@@ -1,6 +1,6 @@
-import Composer from "../components/composer"
-import Navbar from "../components/navbar"
-import PostCard from "../components/post-card"
+import Composer from "@/features/posts/components/composer"
+import Navbar from "@/features/posts/components/navbar"
+import PostCard from "@/features/posts/components/post-card"
 
 export default function PostsPage() {
 

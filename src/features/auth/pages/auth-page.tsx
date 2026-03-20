@@ -1,6 +1,6 @@
-import Tabs from "../../../components/tabs"
-import LoginForm from "../components/forms/login-form"
-import RegisterForm from "../components/forms/register-form"
+import Tabs from "@/components/tabs"
+import LoginForm from "@/features/auth/components/forms/login-form"
+import RegisterForm from "@/features/auth/components/forms/register-form"
 
 export default function AuthPage() {
   const tabs = [

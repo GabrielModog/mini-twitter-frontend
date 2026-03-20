@@ -1,11 +1,11 @@
+import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { Mail, User } from "lucide-react";
 
-import { registerSchema } from "../../schemas";
-import { Input } from "../../../../components/input";
-import SubmitButton from "../submit-button";
-import { useTransition } from "react";
+import { registerSchema } from "@/features/auth/schemas";
+import { Input } from "@/components/input";
+import SubmitButton from "@/features/auth/components/submit-button";
 
 export default function RegisterForm() {
   const methods = useForm({

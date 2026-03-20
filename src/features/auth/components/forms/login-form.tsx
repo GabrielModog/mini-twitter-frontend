@@ -1,11 +1,11 @@
+import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
 
-import { loginSchema } from "../../schemas";
-import { Input } from "../../../../components/input";
-import SubmitButton from "../submit-button";
-import { useTransition } from "react";
+import { loginSchema } from "@/features/auth/schemas";
+import SubmitButton from "@/features/auth/components/submit-button";
+import { Input } from "@/components/input";
 
 export default function LoginForm() {
   const methods = useForm({

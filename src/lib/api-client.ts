@@ -1,5 +1,5 @@
 import axios from "axios"
-import { useAuthStore } from "../features/auth/store"
+import { useAuthStore } from "@/features/auth/store"
 
 const DEFAULT_ENDPOINT = "http://localhost:3000"
 
