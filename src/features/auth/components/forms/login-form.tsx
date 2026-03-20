@@ -5,6 +5,7 @@ import { Mail } from "lucide-react";
 import { loginSchema } from "../../schemas";
 import { Input } from "../../../../components/input";
 import SubmitButton from "../submit-button";
+import { useTransition } from "react";
 
 export default function LoginForm() {
   const methods = useForm({
@@ -12,11 +13,13 @@ export default function LoginForm() {
     defaultValues: { email: '', password: '' },
   })
 
-  const { handleSubmit, formState: { isSubmitting } } = methods
+  const [isPending, startTransition] = useTransition()
 
-  async function onSubmit(data: any) {
-    console.log('[debug] login - data', data);
-    await new Promise(r => setTimeout(r, 1200));
+  function onSubmit(data: any) {
+    startTransition(async () => {
+       console.log('[debug] login - data', data);
+      await new Promise(r => setTimeout(r, 1200));
+    })
   }
 
   return (
@@ -25,11 +28,11 @@ export default function LoginForm() {
         <h3 className="text-3xl font-bold text-sky-500 mb-2">Olá, de novo!</h3>
         <p className="text-md font-normal text-gray-500">Por favor, insira os seus dados para fazer login.</p>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
         <Input label="E-mail" type="email" name="email" placeholder="Insira o seu e-mail" icon={<Mail  className="w-5 h-5"/>} />
         <Input label="Senha" name="password" type="password" placeholder="Insira o sua senha" />
 
-        <SubmitButton isSubmitting={isSubmitting} />
+        <SubmitButton isSubmitting={isPending} />
       </form>
     </FormProvider>
   )
