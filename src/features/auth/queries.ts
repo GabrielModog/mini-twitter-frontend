@@ -3,6 +3,7 @@ import { useAuthStore } from "./store"
 import apiClient from "../../lib/api-client"
 import type { LoginForm, RegisterForm } from "./types"
 import { useNavigate } from "react-router"
+import { queryClient } from "../../lib/query-client"
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
@@ -40,6 +41,30 @@ export const useRegisterMutation = () => {
     },
     onError: (err: any) => {
       setError(err?.response?.data?.error || 'Não foi possível fazer cadastro')
+    },
+    onSettled: () => setLoading(false),
+  })
+}
+
+export const useLogoutMutation = () => {
+  const navigate = useNavigate();
+  const { clearAuth, token, setLoading, setError } = useAuthStore();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!token) throw new Error('No token');
+      setLoading(true);
+      await apiClient.post('/auth/logout');
+    },
+    onSuccess: () => {
+      clearAuth();
+      queryClient.clear();
+      navigate('/');
+    },
+    onError: (err: any) => {
+      setError(err?.response?.data?.error || 'Erro ao sair')
+      clearAuth();
+      navigate('/');
     },
     onSettled: () => setLoading(false),
   })
