@@ -12,9 +12,10 @@ export interface AuthState {
   logout: () => void;
   setLoading: (loading: boolean) => void;
   setError: (err: string | null) => void;
+  clearAuth: () => void;
 }
 
-export const AuthStore = create<AuthState>(
+export const useAuthStore = create<AuthState>(
   (set) => ({
     user: null,
     token: null,
@@ -32,6 +33,14 @@ export const AuthStore = create<AuthState>(
       }),
 
     logout: () =>
+      set({
+        user: null,
+        token: null,
+        isAuthenticated: false,
+        error: null,
+      }),
+
+    clearAuth: () =>
       set({
         user: null,
         token: null,
