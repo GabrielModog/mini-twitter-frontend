@@ -33,7 +33,7 @@ export default function Navbar() {
                 placeholder="Buscar por post..."
                 className="
                   w-full h-10 pl-11 text-sm
-                  bg-gray-50 border border-gray-300 
+                  bg-white border border-gray-300 
                   rounded-md text-gray-900 
                   placeholder-gray-500 
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
@@ -51,6 +51,7 @@ export default function Navbar() {
                 hover:bg-sky-600 
                 focus:outline-none focus:ring-2 focus:ring-blue-500
                 transition
+                -scale-x-100
               "
               aria-label="Atualizar feed"
               onClick={() => {
