@@ -3,3 +3,9 @@ import type { loginSchema, registerSchema } from "./schemas"
 
 export type LoginForm = z.infer<typeof loginSchema>
 export type RegisterForm = z.infer<typeof registerSchema>
+
+export interface IUser {
+  id: number
+  name: string
+  email: string
+}
