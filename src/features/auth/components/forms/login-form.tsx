@@ -4,6 +4,7 @@ import { Mail } from "lucide-react";
 
 import { loginSchema } from "../../schemas";
 import { Input } from "../../../../components/input";
+import SubmitButton from "../submit-button";
 
 export default function LoginForm() {
   const methods = useForm({
@@ -28,13 +29,7 @@ export default function LoginForm() {
         <Input label="E-mail" type="email" name="email" placeholder="Insira o seu e-mail" icon={<Mail  className="w-5 h-5"/>} />
         <Input label="Senha" name="password" type="password" placeholder="Insira o sua senha" />
 
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="w-full h-14 text-white py-3 bg-sky-500 hover:bg-sky-700 rounded-4xl font-medium transition disabled:opacity-60 cursor-pointer shadow-lg shadow-blue-200"
-        >
-          {isSubmitting ? 'Fazendo Login...' : 'Continuar'}
-        </button>
+        <SubmitButton isSubmitting={isSubmitting} />
       </form>
     </FormProvider>
   )
