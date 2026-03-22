@@ -1,75 +1,140 @@
-# React + TypeScript + Vite
+# Mini Twitter
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicação de microblogging inspirada no Twitter, construída com React, TypeScript e Tailwind CSS.
 
-Currently, two official plugins are available:
+## Tecnologias
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Frontend
+- **React 19** - Biblioteca de UI
+- **TypeScript** - Superset tipado de JavaScript
+- **Tailwind CSS** - Framework de estilização com classes utilitárias
+- **React Router** - Roteamento de páginas
+- **React Hook Form** - Gerenciamento de formulários
+- **Zod** - Validação de esquemas
+- **TanStack Query (React Query)** - Gerenciamento de estado assíncrono e cache
+- **Zustand** - Gerenciamento de estado global
+- **Lucide React** - Biblioteca de ícones
+- **react-intersection-observer** - Detecção de scroll para infinite loading
 
-## React Compiler
+### Backend (referência)
+- **Bun/Elysia** - Framework web (API)
+- **JWT** - Autenticação por tokens
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Funcionalidades
 
-Note: This will impact Vite dev & build performances.
+- [x] Autenticação (login/registro)
+- [x] Persistência de sessão com localStorage
+- [x] Criação de posts com título, conteúdo e imagem (base64)
+- [x] Feed de posts com scroll infinito
+- [x] Curtir posts
+- [x] Excluir posts (apenas autor)
+- [x] Busca de posts por termo
+- [x] Modo claro/escuro
+- [x] Interface responsiva
+- [x] Toast notifications
 
-## Expanding the ESLint configuration
+## Como Rodar
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Pré-requisitos
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+- Node.js 18+ ou Bun
+- npm ou bun
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Instalação
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+# Clone o repositório
+git clone <url-do-repositorio>
+cd mini-twitter
+
+# Instale as dependências
+npm install
+# ou
+bun install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Variáveis de Ambiente
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Crie um arquivo `.env` na raiz do projeto:
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```env
+API_ENDPOINT=http://localhost:3000
 ```
+
+### Rodando o Projeto
+
+```bash
+# Modo desenvolvimento
+npm run dev
+# ou
+bun run dev
+
+# Build para produção
+npm run build
+# ou
+bun run build
+```
+
+### Backend
+
+O projeto depende de uma API backend. Certifique-se de ter o servidor rodando em `http://localhost:3000` (ou a URL configurada em `API_ENDPOINT`).
+
+## Estrutura do Projeto
+
+```
+src/
+├── components/          # Componentes reutilizáveis
+│   ├── ui/             # Componentes de UI (Button, Input, Toast, etc.)
+│   ├── Composer.tsx    # Componente de criação de posts
+│   └── ...
+├── contexts/            # React Contexts
+│   └── ToastContext.tsx # Sistema de notificações
+├── features/            # Features organizadas por domínio
+│   ├── auth/           # Autenticação
+│   │   ├── components/  # Login, Registro, ProtectedRoute
+│   │   ├── pages/      # AuthPage
+│   │   ├── hooks/       # useLoginMutation, useRegisterMutation, useLogoutMutation
+│   │   ├── queries.ts   # Mutations de autenticação
+│   │   ├── schemas.ts   # Schemas Zod
+│   │   ├── store.ts     # Zustand store
+│   │   └── types.ts     # Tipos TypeScript
+│   ├── layout/          # Layout da aplicação
+│   │   └── Layout.tsx   # Navbar, Footer
+│   └── posts/           # Posts
+│       ├── components/  # PostCard, PostsFeed, PostsPage
+│       ├── hooks/        # usePosts, useCreatePost, useDeletePost, useLikePost
+│       ├── stores/       # Zustand store
+│       └── schemas.ts    # Schemas Zod
+├── hooks/               # Hooks globais
+├── lib/                 # Configurações e utilitários
+│   ├── api-client.ts    # Instância Axios
+│   └── query-client.ts  # React Query client
+└── utils/               # Funções utilitárias
+    ├── api.ts           # Tratamento de erros da API
+    └── date.ts          # Formatação de datas
+```
+
+## API Endpoints
+
+| Método | Endpoint | Descrição |
+|--------|---------|-----------|
+| GET | `/posts?page=1&search=termo` | Lista posts (paginado) |
+| POST | `/posts` | Cria post |
+| DELETE | `/posts/:id` | Deleta post |
+| POST | `/posts/:id/like` | Curtir/descurtir post |
+| POST | `/auth/login` | Login |
+| POST | `/auth/register` | Registro |
+| POST | `/auth/logout` | Logout |
+
+## Scripts Disponíveis
+
+| Script | Descrição |
+|--------|-----------|
+| `npm run dev` | Roda em modo desenvolvimento |
+| `npm run build` | Gera build de produção |
+| `npm run preview` | Preview do build |
+| `npm run test` | Roda testes |
+
+## Licença
+
+MIT
