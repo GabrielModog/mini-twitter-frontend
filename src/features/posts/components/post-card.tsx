@@ -1,50 +1,58 @@
 import { Heart } from 'lucide-react'
-import { useState } from 'react'
+import type { IPost } from '../types'
+import { formatDate } from '@/lib/date';
+import { useDeletePost, useLikePost } from '../queries';
+import { getApiError } from '@/lib/api-client';
+import { useToast } from '@/contexts/toast-context';
 
-interface PostProps {
-  author: {
-    name: string
-    username: string
-  }
-  date: string
-  title: string
-  content: string
-  imageUrl?: string
-  likes?: number
-  liked?: boolean
-}
+interface PostCardProps extends IPost {}
 
-export default function PostCard({
-  author,
-  date,
-  title,
-  content,
-  imageUrl,
-  likes = 0,
-  liked = false,
-}: PostProps) {
-  const [isLiked, setIsLiked] = useState(liked)
-  const [likeCount, setLikeCount] = useState(likes)
+export default function PostCard(props: PostCardProps) {
+  const { id, authorId, authorName, createdAt, title, content, image, likesCount } = props
+
+  // const userId = useAuthStore((state) => state.user?.id);
+  // const isAuthor = userId === authorId;
+
+  const likePost = useLikePost();
+  const deletePost = useDeletePost();
+
+  const { showToast } = useToast()
 
   const handleLike = () => {
-    setIsLiked(!isLiked)
-    setLikeCount(prev => isLiked ? prev - 1 : prev + 1)
-  }
+    likePost.mutate(id, {
+      onError: (error) => {
+        const { message } = getApiError(error);
+        showToast(message, "error");
+      },
+    });
+  };
+
+  // const handleDelete = () => {
+  //   if (confirm("Tem certeza que deseja excluir este post?")) {
+  //     deletePost.mutate(id, {
+  //       onSuccess: () => showToast("Post excluído!", "success"),
+  //       onError: (error) => {
+  //         const { message } = getApiError(error);
+  //         showToast(message, "error");
+  //       },
+  //     });
+  //   }
+  // };
 
   return (
-    <div className="w-160 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+    <article className="w-160 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
       <div className="px-4 pt-4 flex items-start gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap text-sm">
             <span className="font-bold text-gray-700 truncate">
-              {author.name}
+              {authorName}
             </span>
-            <span className="text-gray-500 truncate">
+            {/* <span className="text-gray-500 truncate">
               @{author.username}
-            </span>
+            </span> */}
             <span className="text-gray-500">·</span>
             <span className="text-gray-500">
-              {date}
+              {formatDate(createdAt)}
             </span>
           </div>
           <h5 className="text-lg font-bold text-gray-700">{title}</h5>
@@ -52,10 +60,10 @@ export default function PostCard({
             {content}
           </p>
 
-          {imageUrl && (
+          {image && (
             <div className="max-h-50 mt-3 rounded-2xl overflow-hidden border border-gray-200">
               <img
-                src={imageUrl}
+                src={image}
                 alt="Post media"
                 className="w-full h-auto object-cover max-h-125"
                 loading="lazy"
@@ -69,22 +77,32 @@ export default function PostCard({
               className={`
                 flex items-center gap-1.5 px-3 py-1.5 rounded-full 
                 hover:bg-red-50 transition-colors
-                ${isLiked ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}
+                ${likesCount ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}
               `}
             >
               <Heart
                 className="w-5 h-5"
-                fill={isLiked ? 'currentColor' : 'none'}
+                fill={likesCount ? 'currentColor' : 'none'}
               />
-              {likeCount > 0 && (
-                <span className="text-sm font-medium">{likeCount}</span>
+              {(likesCount && likesCount > 0 )&& (
+                <span className="text-sm font-medium">{likesCount}</span>
               )}
             </button>
+
+            {/* {isAuthor && (
+              <button
+                onClick={handleDelete}
+                disabled={deletePost.isPending}
+                className="text-sm text-gray-500 hover:text-red-500 transition"
+              >
+                Excluir Post
+              </button>
+            )} */}
           </div>
         </div>
       </div>
 
       <div className="h-2" />
-    </div>
+    </article>
   )
 }
