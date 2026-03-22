@@ -1,10 +1,15 @@
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useAuthStore } from "@/features/auth/store"
+
+export interface ApiError {
+  message: string;
+  status?: number;
+}
 
 const DEFAULT_ENDPOINT = "http://localhost:3000"
 
 const apiClient = axios.create({
-  baseURL: process.env.API_ENDPOINT || DEFAULT_ENDPOINT,
+  baseURL: import.meta.env.VITE_API_ENDPOINT || DEFAULT_ENDPOINT,
 })
 
 apiClient.interceptors.request.use((config) => {
@@ -22,5 +27,16 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export function getApiError(error: unknown): ApiError {
+  if (error instanceof AxiosError) {
+    return {
+      message: error.response?.data?.error || error.message || "Erro desconhecido",
+      status: error.response?.status,
+    };
+  }
+  return { message: "Erro desconhecido" };
+}
+
 
 export default apiClient
