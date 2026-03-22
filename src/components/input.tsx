@@ -1,19 +1,19 @@
 import { Eye, EyeOff } from "lucide-react"
 import { useState, type ReactNode } from "react"
-import { useFormContext } from "react-hook-form"
+import { type UseFormRegister } from "react-hook-form"
 
 export interface InputProps {
   label: string
   name: string
   type: string
   placeholder: string
+  register: UseFormRegister<any>
+  error?: string
   icon?: ReactNode | null
 }
 
 export function Input(props: InputProps) {
-  const { label, name, type, placeholder, icon } = props
-  const { register, formState: { errors } } = useFormContext()
-  const error = errors[name]?.message
+  const { label, name, type, placeholder, error, register, icon } = props
 
   const [showPassword, setShowPasword] = useState(false)
 
@@ -50,7 +50,7 @@ export function Input(props: InputProps) {
           </button>
         )}
       </div>
-      {error && <p className="text-red-400 text-sm">{error.toString()}</p>}
+      {error && <p className="text-red-400 text-sm">{error}</p>}
     </div>
   )
 }

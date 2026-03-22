@@ -15,6 +15,8 @@ export default function RegisterForm() {
 
   const [isPending, startTransition] = useTransition()
 
+  const errors = methods.formState.errors
+
   function onSubmit(data: any) {
     startTransition(async () => {
       console.log('[debug] login - data', data);
@@ -29,9 +31,30 @@ export default function RegisterForm() {
         <p className="text-md font-normal text-gray-500">Por favor, insira os dados solicitados para fazer cadastro.</p>
       </div>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
-        <Input label="Nome" type="text" name="name" placeholder="Insira o seu nome" icon={<User className="w-5 h-5" />} />
-        <Input label="E-mail" type="email" name="email" placeholder="Insira o seu e-mail" icon={<Mail  className="w-5 h-5"/>} />
-        <Input label="Senha" name="password" type="password" placeholder="Insira o sua senha" />
+        <Input 
+          register={methods.register}
+          error={errors["name"]?.message}
+          label="Nome"
+          type="text"
+          name="name"
+          placeholder="Insira o seu nome" icon={<User className="w-5 h-5" />}
+        />
+        <Input 
+          register={methods.register}
+          error={errors["email"]?.message}
+          label="E-mail"
+          type="email"
+          name="email"
+          placeholder="Insira o seu e-mail" icon={<Mail className="w-5 h-5" />}
+        />
+        <Input 
+          register={methods.register}
+          error={errors["password"]?.message}
+          label="Senha"
+          name="password"
+          type="password"
+          placeholder="Insira o sua senha"
+        />
 
         <SubmitButton isSubmitting={isPending} />
       </form>
