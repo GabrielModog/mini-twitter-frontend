@@ -28,14 +28,14 @@ export default function AuthPage() {
   const defaultTab = mode ? tabs.findIndex(x => x.id === mode) ?? 0 : 0
   
   return (
-    <div className="min-h-screen flex items-center justify-center pt-24 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center pt-24 bg-gray-50 dark:bg-linear-to-br dark:from-[#0F172B] dark:to-[#070B14]">
       <div className="w-full max-w-120 h-186.25">
         <div className="text-center mb-10">
           <Logo />
         </div>
         <Tabs tabs={tabs} defaultTab={defaultTab} />
         <div className="my-10 pb-4">
-          <p className="text-center text-xs text-gray-800">
+          <p className="text-center text-xs text-gray-800 dark:text-gray-400">
             Ao clicar em continuar, você concorda com nossos<br />
             <span className="underline">Termos de Serviço e Política de Privacidade.</span>
           </p>

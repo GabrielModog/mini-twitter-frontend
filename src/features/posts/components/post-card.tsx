@@ -40,23 +40,23 @@ export default function PostCard(props: PostCardProps) {
   // };
 
   return (
-    <article className="w-160 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
+    <article className="w-160 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-gray-800 dark:border-gray-700">
       <div className="px-4 pt-4 flex items-start gap-3">
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 flex-wrap text-sm">
-            <span className="font-bold text-gray-700 truncate">
+            <span className="font-bold text-gray-700 dark:text-white truncate">
               {authorName}
             </span>
             {/* <span className="text-gray-500 truncate">
               @{author.username}
             </span> */}
-            <span className="text-gray-500">·</span>
-            <span className="text-gray-500">
+            <span className="text-gray-500 dark:text-gray-600">·</span>
+            <span className="text-gray-500 dark:text-gray-600">
               {formatDate(createdAt)}
             </span>
           </div>
-          <h5 className="text-lg font-bold text-gray-700">{title}</h5>
-          <p className="mt-1 text-gray-700 whitespace-pre-wrap leading-relaxed">
+          <h5 className="text-lg font-bold text-gray-700 dark:text-white">{title}</h5>
+          <p className="mt-1 text-gray-700 dark:text-gray-400 whitespace-pre-wrap leading-relaxed">
             {content}
           </p>
 

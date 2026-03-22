@@ -99,7 +99,7 @@ export default function Composer() {
   }
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} onBlur={handleBlur} className="w-160 min-height-40.6 bg-white border border-gray-200 rounded-xl shadow-lg shadow-gray-200">
+    <form onSubmit={handleSubmit(onSubmit)} onBlur={handleBlur} className="w-160 min-height-40.6 bg-white border border-gray-200 rounded-xl shadow-lg shadow-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-800">
       {!isExpanded ? (
         <div
           onClick={handleExpand}
@@ -153,7 +153,7 @@ export default function Composer() {
       )}
 
       <div className="px-4">
-        <div className="border-t border-gray-200" />
+        <div className="border-t border-gray-200 dark:border-gray-700" />
       </div>
 
       <div className="flex items-center justify-between px-4 pb-4 pt-3">

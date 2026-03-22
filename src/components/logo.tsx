@@ -10,7 +10,7 @@ const sizeStyles: Record<LogoSizes, string> = {
   "lg": "text-4xl"
 }
 
-const baseClass = "font-bold text-sky-500"
+const baseClass = "font-bold text-sky-500 dark:text-white"
 
 const buildStyleClasses = (size: LogoSizes) =>
   `

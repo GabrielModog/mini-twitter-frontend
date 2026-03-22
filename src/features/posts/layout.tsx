@@ -12,7 +12,7 @@ interface LayoutProps {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center pt-18 bg-gray-50">
+    <div className="min-h-screen flex flex-col items-center justify-center pt-18 bg-gray-50 dark:bg-linear-to-br dark:from-[#0F172B] dark:to-[#070B14]">
       <Navbar />
       <main className="w-full max-w-2xl flex flex-col items-center pt-4">
         {children}
@@ -39,7 +39,7 @@ function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="w-full max-w-7xl mx-auto">
         <div className="flex items-center justify-center h-18 px-8 lg:px-0">
           <div className="w-full">
@@ -94,10 +94,16 @@ function Navbar() {
               <Link
                 to="/auth?mode=register"
                 className="
+                  border
                   px-4 py-2 text-sm font-medium
-                  text-sky-500 border border-sky-500
-                  rounded-full hover:bg-sky-50
+                  bg-gray-200 text-gray-900
+                  hover:bg-gray-300
+                  focus:ring-gray-400
+                  rounded-full
                   transition
+                  dark:bg-gray-800
+                  dark:border-gray-700
+                  dark:text-white
                 "
               >
                 Registra-se

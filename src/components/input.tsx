@@ -33,8 +33,9 @@ export function Input(props: InputProps) {
           placeholder={placeholder}
           className={`
             w-full h-14.25 bg-white px-4 py-3 border rounded-lg outline-none
-            focus:border-blue-500 transition text-gray-800 font-medium
-            ${error ? 'border-red-500' : 'border-gray-200'}
+            focus:border-blue-500 transition text-gray-800 font-medium dark:font-light
+            dark:bg-gray-700 dark:text-gray-50
+            ${error ? 'border-red-500' : 'border-gray-200 dark:border-gray-500'}
           `}
           {...register(name)}
         />

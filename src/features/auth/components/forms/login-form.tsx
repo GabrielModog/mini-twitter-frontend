@@ -28,7 +28,7 @@ export default function LoginForm() {
   return (
     <>
       <div className="flex flex-col mt-12 mb-10">
-        <h3 className="text-3xl font-bold text-sky-500 mb-2">Olá, de novo!</h3>
+        <h3 className="text-3xl font-bold text-sky-500 dark:text-white mb-2">Olá, de novo!</h3>
         <p className="text-md font-normal text-gray-500">Por favor, insira os seus dados para fazer login.</p>
       </div>
       <form onSubmit={methods.handleSubmit(onSubmit)} className="space-y-6">
