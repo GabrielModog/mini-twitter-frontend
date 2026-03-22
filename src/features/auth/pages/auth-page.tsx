@@ -1,13 +1,27 @@
+import { useEffect } from "react"
+import { useNavigate } from "react-router"
+
 import Logo from "@/components/logo"
 import Tabs from "@/components/tabs"
 import LoginForm from "@/features/auth/components/forms/login-form"
 import RegisterForm from "@/features/auth/components/forms/register-form"
+import { useAuthStore } from "@/features/auth/store"
 
 export default function AuthPage() {
+  const { isAuthenticated } = useAuthStore();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/posts', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
   const tabs = [
     { label: 'Login', content: <LoginForm /> },
     { label: 'Cadastrar', content: <RegisterForm /> },
   ]
+  
   return (
     <div className="min-h-screen flex items-center justify-center pt-24 bg-gray-50">
       <div className="w-full max-w-120 h-186.25">

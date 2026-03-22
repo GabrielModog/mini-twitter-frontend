@@ -14,6 +14,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<AuthPage />} />
+            <Route path="/auth" element={<AuthPage />} />
             <Route element={<ProtectedRoute />}>
               <Route path="/posts" element={<PostsPage />} />
             </Route>
