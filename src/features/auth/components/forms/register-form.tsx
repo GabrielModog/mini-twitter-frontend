@@ -6,6 +6,7 @@ import { Mail, User } from "lucide-react";
 import { registerSchema } from "@/features/auth/schemas";
 import { Input } from "@/components/input";
 import Button from "@/components/button";
+import { useRegisterMutation } from "../../queries";
 
 export default function RegisterForm() {
   const methods = useForm({
@@ -14,13 +15,13 @@ export default function RegisterForm() {
   });
 
   const [isPending, startTransition] = useTransition()
+  const register = useRegisterMutation()
 
   const errors = methods.formState.errors
 
   function onSubmit(data: any) {
     startTransition(async () => {
-      console.log('[debug] login - data', data);
-      await new Promise(r => setTimeout(r, 1200));
+      await register.mutateAsync(data)
     })
   }
 

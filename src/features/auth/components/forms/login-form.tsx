@@ -6,22 +6,22 @@ import { Mail } from "lucide-react";
 import { loginSchema } from "@/features/auth/schemas";
 import { Input } from "@/components/input";
 import Button from "@/components/button";
+import { useLoginMutation } from "@/features/auth/queries";
 
 export default function LoginForm() {
   const methods = useForm({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: '', password: '' },
-    shouldUnregister: false
   })
 
   const [isPending, startTransition] = useTransition()
+  const login = useLoginMutation();
 
   const errors = methods.formState.errors
 
   function onSubmit(data: any) {
     startTransition(async () => {
-       console.log('[debug] login - data', data);
-      await new Promise(r => setTimeout(r, 1200));
+      await login.mutateAsync(data)
     })
   }
 
