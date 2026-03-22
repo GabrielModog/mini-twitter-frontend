@@ -4,8 +4,8 @@ import { useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
 
 import { loginSchema } from "@/features/auth/schemas";
-import SubmitButton from "@/features/auth/components/submit-button";
 import { Input } from "@/components/input";
+import Button from "@/components/button";
 
 export default function LoginForm() {
   const methods = useForm({
@@ -49,7 +49,7 @@ export default function LoginForm() {
           placeholder="Insira o sua senha" 
         />
 
-        <SubmitButton isSubmitting={isPending} />
+        <Button type="submit" label="Continuar" loading={isPending} />
       </form>
     </>
   )

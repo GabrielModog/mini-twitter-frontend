@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image as ImageIcon } from 'lucide-react';
+import Button from '@/components/button';
 
 export default function Composer() {
   const [text, setText] = useState('');
@@ -59,21 +60,16 @@ export default function Composer() {
           <ImageIcon strokeWidth={1.5} className="h-8 w-8" />
         </button>
 
-        <button
-          onClick={handlePost}
+        <Button 
+          type="button"
+          label="Postar"
           disabled={isButtonDisabled}
-          className={`
-            h-8.25 px-6 text-sm font-bold
-            bg-sky-500 text-white
-            rounded-full 
-            hover:bg-sky-600 
-            focus:outline-none focus:ring-2 focus:ring-sky-300 focus:ring-offset-2
-            transition disabled:opacity-50 disabled:cursor-not-allowed
-            shadow-sm
-          `}
-        >
-          {isPosting ? 'Postando...' : 'Postar'}
-        </button>
+          loading={isPosting}
+          loadingMessage="Postando..."
+          size="sm"
+          variant="primary"
+          onClick={handlePost}
+        />
       </div>
     </div>
   );

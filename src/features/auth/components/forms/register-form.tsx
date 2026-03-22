@@ -5,7 +5,7 @@ import { Mail, User } from "lucide-react";
 
 import { registerSchema } from "@/features/auth/schemas";
 import { Input } from "@/components/input";
-import SubmitButton from "@/features/auth/components/submit-button";
+import Button from "@/components/button";
 
 export default function RegisterForm() {
   const methods = useForm({
@@ -56,7 +56,7 @@ export default function RegisterForm() {
           placeholder="Insira o sua senha"
         />
 
-        <SubmitButton isSubmitting={isPending} />
+        <Button type="submit" label="Continuar" loading={isPending} />
       </form>
     </FormProvider>
   );
