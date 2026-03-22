@@ -55,7 +55,7 @@ const buildStyleClasses = (className: string, size: ButtonSize, variant: ButtonV
   .replace(/\s+/g, ' ')
 
 export default function Button(props: ButtonProps) {
-  const { type = 'button', label, onClick, loading, disabled = false, className = '', variant = 'primary', size = 'full' } = props
+  const { type = 'button', label, onClick, loading = false, loadingMessage = 'Carregando...', disabled = false, className = '', variant = 'primary', size = 'full' } = props
   const classes = buildStyleClasses(className, size, variant)
   return (
     <button
@@ -65,7 +65,7 @@ export default function Button(props: ButtonProps) {
       className={classes}
       onClick={onClick}
     >
-      {loading ? 'Carregando...' : label}
+      {loading ? loadingMessage : label}
     </button>
   )
 }
