@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams, useSearchParams } from "react-router"
 
 import Logo from "@/components/logo"
 import Tabs from "@/components/tabs"
@@ -10,6 +10,9 @@ import { useAuthStore } from "@/features/auth/store"
 export default function AuthPage() {
   const { isAuthenticated } = useAuthStore();
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams()
+
+  const mode = searchParams.get('mode')
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -18,9 +21,11 @@ export default function AuthPage() {
   }, [isAuthenticated, navigate]);
 
   const tabs = [
-    { label: 'Login', content: <LoginForm /> },
-    { label: 'Cadastrar', content: <RegisterForm /> },
+    { id: 'login', label: 'Login', content: <LoginForm /> },
+    { id: 'register', label: 'Cadastrar', content: <RegisterForm /> },
   ]
+
+  const defaultTab = mode ? tabs.findIndex(x => x.id === mode) ?? 0 : 0
   
   return (
     <div className="min-h-screen flex items-center justify-center pt-24 bg-gray-50">
@@ -28,7 +33,7 @@ export default function AuthPage() {
         <div className="text-center mb-10">
           <Logo />
         </div>
-        <Tabs tabs={tabs} />
+        <Tabs tabs={tabs} defaultTab={defaultTab} />
         <div className="my-10 pb-4">
           <p className="text-center text-xs text-gray-800">
             Ao clicar em continuar, você concorda com nossos<br />
