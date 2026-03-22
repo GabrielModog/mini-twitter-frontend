@@ -12,8 +12,10 @@ import type { PostFormType } from '@/features/posts/types';
 import { useToast } from '@/contexts/toast-context';
 import { getApiError } from '@/lib/api-client';
 import { Input } from '@/components/input';
+import { useAuthStore } from '@/features/auth/store';
 
 export default function Composer() {
+  const isAuthenticated = useAuthStore(state => state.isAuthenticated)
   const { showToast } = useToast();
   const createPost = useCreatePost();
 
@@ -78,7 +80,7 @@ export default function Composer() {
 
   function onSubmit(data: PostFormType) {
     createPost.mutate(
-      { title: data.content, content: data.content, image: data.image },
+      { title: data.content, content: data.content, image: data.image ?? "" },
       {
         onSuccess: () => {
           showToast("Post criado!", "success")
@@ -164,10 +166,12 @@ export default function Composer() {
         <button
           type="button"
           onClick={handleImageClick}
+          disabled={!isAuthenticated}
           className="
             rounded-full 
             text-sky-500 hover:bg-sky-50 
             transition focus:outline-none focus:ring-2 focus:ring-sky-300
+            disabled:opacity-50
           "
           aria-label="Adicionar imagem"
         >
