@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LogOut, Search } from 'lucide-react';
+import Logo from '@/components/logo';
 
 export default function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
@@ -17,7 +18,7 @@ export default function Navbar() {
         <div className="flex items-center justify-center h-18 px-8 lg:px-0">
           <div className="w-full">
             <a href="/" className="text-lg font-bold text-sky-500 hover:sky-blue-700 transition">
-              Mini Twitter
+              <Logo size="sm" />
             </a>
           </div>
 
@@ -54,9 +55,6 @@ export default function Navbar() {
                 -scale-x-100
               "
               aria-label="Atualizar feed"
-              onClick={() => {
-                console.log('Atualizando feed...');
-              }}
             >
               <LogOut className="h-5 w-5" />
             </button>
