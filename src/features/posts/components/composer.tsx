@@ -62,6 +62,7 @@ export default function Composer() {
   }
 
   const handleExpand = () => {
+    if (!isAuthenticated) return
     setIsExpanded(true)
     setTimeout(() => {
       titleInputRef.current?.focus()
@@ -73,7 +74,7 @@ export default function Composer() {
     if (!relatedTarget?.closest('form')) {
       if (!hasContent && !imageValue) {
         setIsExpanded(false)
-        reset({ title: "", content: "", image: null })
+        reset()
       }
     }
   }
@@ -84,7 +85,7 @@ export default function Composer() {
       {
         onSuccess: () => {
           showToast("Post criado!", "success")
-          reset({ title: "", content: "", image: null })
+          reset()
           if (fileInputRef.current) {
             fileInputRef.current.value = ""
           }
@@ -109,6 +110,7 @@ export default function Composer() {
             placeholder="E aí, o que está rolando?"
             register={register}
             rows={3}
+            disabled={true}
           />
         </div>
       ) : (

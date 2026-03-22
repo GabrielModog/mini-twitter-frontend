@@ -7,10 +7,11 @@ export interface TextareaProps {
   register: UseFormRegister<any>
   error?: string
   rows?: number
+  disabled?: boolean
 }
 
 export function Textarea(props: TextareaProps) {
-  const { label, name, placeholder, error, register, rows = 3 } = props
+  const { label, name, placeholder, error, register, rows = 3, disabled } = props
 
   return (
     <div className="space-y-2">
@@ -29,6 +30,7 @@ export function Textarea(props: TextareaProps) {
           ${error ? 'border-red-500' : 'border-gray-200'}
         `}
         rows={rows}
+        disabled={disabled}
         {...register(name)}
       />
       {error && <p className="text-red-400 text-sm">{error}</p>}

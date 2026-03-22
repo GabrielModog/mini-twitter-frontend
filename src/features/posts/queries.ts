@@ -1,10 +1,9 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 
 import apiClient from "@/lib/api-client";
 import { usePostsStore } from "./store";
 
 import type { CreatePostPayload, IPost, LikeResponse, PostDataResponse } from "./types";
-import { useEffect } from "react";
 
 export function useCreatePost() {
   const queryClient = useQueryClient();
@@ -38,27 +37,25 @@ export function useDeletePost() {
 }
 
 export function usePosts(search?: string) {
+  const prevPosts = usePostsStore((state) => state.posts)
   const setPosts = usePostsStore((state) => state.setPosts);
-  const setPagination = usePostsStore((state) => state.setPagination)
-
-  const query = useQuery({
+  return useInfiniteQuery({
     queryKey: ["posts", search],
-    queryFn: async () => {
+    initialPageParam: 1,
+    queryFn: async (data) => {
       const params = new URLSearchParams();
+      params.append("page", String(data.pageParam))
       if (search) params.append("search", search);
       const response = await apiClient.get<PostDataResponse>("/posts", { params });
+      setPosts([...prevPosts, ...response.data.posts])
       return response.data;
     },
+    getNextPageParam: (data) => {
+      const { page, limit, total } = data
+      if (page * limit < total) return page + 1
+      return undefined
+    },
   });
-
-  useEffect(() => {
-    if (query.data) {
-      setPosts(query.data.posts);
-      setPagination(query.data.limit, query.data.page, query.data.total)
-    }
-  }, [query.data, setPosts]);
-
-  return query;
 }
 
 export function useLikePost() {
