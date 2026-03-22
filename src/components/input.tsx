@@ -3,7 +3,7 @@ import { useState, type ReactNode } from "react"
 import { type UseFormRegister } from "react-hook-form"
 
 export interface InputProps {
-  label: string
+  label?: string
   name: string
   type: string
   placeholder: string
@@ -23,12 +23,12 @@ export function Input(props: InputProps) {
 
   return (
     <div className="space-y-2">
-      <label htmlFor={`${name}-${type}`} className="block text-sm font-normal text-gray-500">
+      {label && <label htmlFor={`${name}-${type}`} className="block text-sm font-normal text-gray-500">
         {label}
-      </label>
+      </label>}
       <div className="relative">
         <input
-          id={`${name}-${type}`} 
+          id={`${name}-${type}`}
           type={inputType}
           placeholder={placeholder}
           className={`
