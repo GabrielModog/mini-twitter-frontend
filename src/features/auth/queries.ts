@@ -4,6 +4,7 @@ import apiClient from "@/lib/api-client"
 import type { LoginForm, RegisterForm } from "./types"
 import { useNavigate } from "react-router"
 import { queryClient } from "@/lib/query-client"
+import { useToast } from "@/contexts/toast-context"
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ export const useLoginMutation = () => {
 export const useRegisterMutation = () => {
   const navigate = useNavigate();
   const { setLoading, setError } = useAuthStore();
+  const { showToast } = useToast()
 
   return useMutation({
     mutationFn: async (credentials: RegisterForm) => {
@@ -37,7 +39,8 @@ export const useRegisterMutation = () => {
       return res.data
     },
     onSuccess: () => {
-      navigate('/')
+      showToast("Usuário criado!", "success")
+      navigate("/posts")
     },
     onError: (err: any) => {
       setError(err?.response?.data?.error || 'Não foi possível fazer cadastro')
