@@ -93,7 +93,10 @@ function Navbar() {
                     p-2 rounded-full text-white bg-sky-500
                     hover:bg-sky-600 
                     focus:outline-none focus:ring-2 focus:ring-blue-500
+                    dark:bg-gray-700 dark:text-white dark:hover:bg-gray-500
                     transition
+                    -scale-x-100
+                    cursor-pointer
                   "
                   aria-label="Sair"
                   onClick={handleLogout}
