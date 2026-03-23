@@ -1,4 +1,3 @@
-import { useTransition } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { Mail } from "lucide-react";
@@ -14,15 +13,17 @@ export default function LoginForm() {
     defaultValues: { email: '', password: '' },
   })
 
-  const [isPending, startTransition] = useTransition()
   const login = useLoginMutation();
+  const isPending = login.isPending;
 
   const errors = methods.formState.errors
 
-  function onSubmit(data: any) {
-    startTransition(async () => {
+  async function onSubmit(data: any) {
+    try {
       await login.mutateAsync(data)
-    })
+    } catch {
+      // Error is handled by onError in the mutation
+    }
   }
 
   return (
