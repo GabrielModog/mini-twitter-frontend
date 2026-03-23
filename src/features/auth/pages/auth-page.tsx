@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import { useNavigate, useParams, useSearchParams } from "react-router"
+import { useNavigate, useSearchParams } from "react-router"
 
 import Logo from "@/components/logo"
 import Tabs from "@/components/tabs"
@@ -26,7 +26,7 @@ export default function AuthPage() {
   ]
 
   const defaultTab = mode ? tabs.findIndex(x => x.id === mode) ?? 0 : 0
-  
+
   return (
     <div className="min-h-screen flex items-center justify-center pt-24 bg-gray-50 dark:bg-linear-to-br dark:from-[#0F172B] dark:to-[#070B14]">
       <div className="w-full max-w-120 h-186.25">
