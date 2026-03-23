@@ -110,7 +110,7 @@ export default function Composer() {
             placeholder="E aí, o que está rolando?"
             register={register}
             rows={3}
-            disabled={true}
+            disabled={!isAuthenticated}
           />
         </div>
       ) : (
@@ -121,6 +121,7 @@ export default function Composer() {
             placeholder="Título"
             register={register}
             error={errors.title?.message}
+            borderless
           />
           <Textarea
             name="content"

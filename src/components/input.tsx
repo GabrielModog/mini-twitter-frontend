@@ -10,16 +10,40 @@ export interface InputProps {
   register: UseFormRegister<any>
   error?: string
   icon?: ReactNode | null
+  className?: string
+  borderless?: boolean
 }
 
+const baseClass = `
+            w-full h-14.25px-4 py-3 transition 
+            text-gray-800 font-medium dark:font-light
+            dark:text-gray-400 px-4 outline-none
+          `
+
+const buildClassStyles = (error: boolean, borderless: boolean, customClasses: string) => {
+  const err = error ? 'border-red-500' : 'border-gray-200 dark:border-gray-500'
+  const border = borderless 
+        ? `border-none bg-none text` 
+        : `border rounded-lg  bg-white 
+            focus:border-blue-500 dark:bg-gray-800 `
+  return `
+    ${baseClass}
+    ${border}
+    ${err}
+    ${customClasses}
+  `
+} 
+
 export function Input(props: InputProps) {
-  const { label, name, type, placeholder, error, register, icon } = props
+  const { label, name, type, placeholder, error, register, icon, className, borderless } = props
 
   const [showPassword, setShowPasword] = useState(false)
 
   const isPasswordField = type === "password" || name.includes("password")
   const hasIcon = !isPasswordField && icon
   const inputType = isPasswordField && showPassword ? "text" : type
+
+  const classNames = buildClassStyles(!!error, borderless ?? false, className || "")
 
   return (
     <div className="space-y-2">
@@ -31,12 +55,7 @@ export function Input(props: InputProps) {
           id={`${name}-${type}`}
           type={inputType}
           placeholder={placeholder}
-          className={`
-            w-full h-14.25 bg-white px-4 py-3 border rounded-lg outline-none
-            focus:border-blue-500 transition text-gray-800 font-medium dark:font-light
-            dark:bg-gray-700 dark:text-gray-50
-            ${error ? 'border-red-500' : 'border-gray-200 dark:border-gray-500'}
-          `}
+          className={classNames}
           {...register(name)}
         />
         {hasIcon && <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 focus:outline-none transition">{icon}</span>}

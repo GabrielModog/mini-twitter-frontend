@@ -11,7 +11,7 @@ export interface TextareaProps {
 }
 
 export function Textarea(props: TextareaProps) {
-  const { label, name, placeholder, error, register, rows = 3, disabled } = props
+  const { label, name, placeholder, error, register, rows = 3, disabled = false } = props
 
   return (
     <div className="space-y-2">
@@ -27,6 +27,7 @@ export function Textarea(props: TextareaProps) {
           bg-transparent border-none 
           focus:outline-none focus:ring-0 
           resize-none text-lg
+          dark:text-gray-500
           ${error ? 'border-red-500' : 'border-gray-200'}
         `}
         rows={rows}
