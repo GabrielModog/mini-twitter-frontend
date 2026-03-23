@@ -29,13 +29,21 @@ apiClient.interceptors.response.use(
 );
 
 export function getApiError(error: unknown): ApiError {
+  if (!error || typeof error !== 'object') {
+    return { message: "Algo deu errado. Tente novamente." };
+  }
+
   if (error instanceof AxiosError) {
+    if (error.code === 'ECONNABORTED' || error.code === 'ERR_NETWORK' || !error.response) {
+      return { message: "Sem conexão. Verifique sua internet." };
+    }
     return {
-      message: error.response?.data?.error || error.message || "Erro desconhecido",
+      message: error.response?.data?.error || "Algo deu errado. Tente novamente.",
       status: error.response?.status,
     };
   }
-  return { message: "Erro desconhecido" };
+
+  return { message: "Algo deu errado. Tente novamente." };
 }
 
 

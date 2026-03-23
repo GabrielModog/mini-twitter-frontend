@@ -1,6 +1,7 @@
 import { useMutation } from "@tanstack/react-query"
 import { useAuthStore } from "./store"
 import apiClient from "@/lib/api-client"
+import { getApiError } from "@/lib/api-client"
 import type { LoginForm, RegisterForm } from "./types"
 import { useNavigate } from "react-router"
 import { queryClient } from "@/lib/query-client"
@@ -8,7 +9,8 @@ import { useToast } from "@/contexts/toast-context"
 
 export const useLoginMutation = () => {
   const navigate = useNavigate();
-  const { login, setLoading, setError } = useAuthStore();
+  const { login, setLoading } = useAuthStore();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async (credentials: LoginForm) => {
@@ -20,8 +22,9 @@ export const useLoginMutation = () => {
       login(user, token)
       navigate('/posts')
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.error || 'Credenciais inválidas')
+    onError: (err: unknown) => {
+      const { message } = getApiError(err);
+      showToast(message, "error");
     },
     onSettled: () => setLoading(false),
   });
@@ -29,7 +32,7 @@ export const useLoginMutation = () => {
 
 export const useRegisterMutation = () => {
   const navigate = useNavigate();
-  const { setLoading, setError } = useAuthStore();
+  const { setLoading } = useAuthStore();
   const { showToast } = useToast()
 
   return useMutation({
@@ -42,8 +45,9 @@ export const useRegisterMutation = () => {
       showToast("Usuário criado!", "success")
       navigate("/posts")
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.error || 'Não foi possível fazer cadastro')
+    onError: (err: unknown) => {
+      const { message } = getApiError(err);
+      showToast(message, "error");
     },
     onSettled: () => setLoading(false),
   })
@@ -51,7 +55,8 @@ export const useRegisterMutation = () => {
 
 export const useLogoutMutation = () => {
   const navigate = useNavigate();
-  const { clearAuth, token, setLoading, setError } = useAuthStore();
+  const { clearAuth, token, setLoading } = useAuthStore();
+  const { showToast } = useToast();
 
   return useMutation({
     mutationFn: async () => {
@@ -64,8 +69,9 @@ export const useLogoutMutation = () => {
       queryClient.clear();
       navigate('/');
     },
-    onError: (err: any) => {
-      setError(err?.response?.data?.error || 'Erro ao sair')
+    onError: (err: unknown) => {
+      const { message } = getApiError(err);
+      showToast(message, "error");
       clearAuth();
       navigate('/');
     },
