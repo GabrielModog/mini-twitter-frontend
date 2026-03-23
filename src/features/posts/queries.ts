@@ -47,6 +47,10 @@ export function usePosts(search?: string) {
       params.append("page", String(data.pageParam))
       if (search) params.append("search", search);
       const response = await apiClient.get<PostDataResponse>("/posts", { params });
+      if (search) {
+        setPosts(response.data.posts)
+        return response.data
+      }
       setPosts([...prevPosts, ...response.data.posts])
       return response.data;
     },

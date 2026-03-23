@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { Link } from 'react-router';
-import { LogOut, Search } from 'lucide-react';
+import { Link, useNavigate } from 'react-router';
+import { LogOut, Search, X as XIcon } from 'lucide-react';
 
 import { useAuthStore } from '@/features/auth/store';
 import { useLogoutMutation } from '@/features/auth/queries';
@@ -26,12 +26,16 @@ function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
   const { isAuthenticated } = useAuthStore();
   const logout = useLogoutMutation();
+  const navigate = useNavigate();
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: React.ChangeEvent) => {
     e.preventDefault();
-    if (searchQuery.trim()) {
-      console.log('Buscando por:', searchQuery);
-    }
+    navigate(`/posts?search=${encodeURIComponent(searchQuery?.trim() || "")}`);
+  };
+
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    navigate('/posts');
   };
 
   const handleLogout = () => {
@@ -65,10 +69,20 @@ function Navbar() {
                       bg-white border border-gray-300 
                       rounded-md text-gray-900 
                       placeholder-gray-500 
+                      dark:bg-gray-700 dark:text-gray-50 dark:border-gray-500
                       focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500
                       transition
                     "
                   />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={handleClearSearch}
+                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                    >
+                      <XIcon className="w-4 h-4" />
+                    </button>
+                  )}
                 </form>
               </div>
 
