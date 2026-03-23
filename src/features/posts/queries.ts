@@ -17,7 +17,6 @@ export function useCreatePost() {
     onSuccess: (newPost) => {
       addPost(newPost);
       queryClient.clear()
-      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
   });
 }

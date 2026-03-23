@@ -81,7 +81,7 @@ export default function Composer() {
 
   function onSubmit(data: PostFormType) {
     createPost.mutate(
-      { title: data.content, content: data.content, image: data.image ?? "" },
+      { title: data.title, content: data.content, image: data.image ?? "" },
       {
         onSuccess: () => {
           showToast("Post criado!", "success")
