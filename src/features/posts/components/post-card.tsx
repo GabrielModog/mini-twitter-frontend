@@ -1,21 +1,17 @@
 import { Heart } from 'lucide-react'
-import type { IPost } from '../types'
+
+import type { IPost } from '@/features/posts/types'
+import { useLikePost } from '@/features/posts/queries';
 import { formatDate } from '@/lib/date';
-import { useDeletePost, useLikePost } from '../queries';
 import { getApiError } from '@/lib/api-client';
 import { useToast } from '@/contexts/toast-context';
 
 interface PostCardProps extends IPost {}
 
 export default function PostCard(props: PostCardProps) {
-  const { id, authorId, authorName, createdAt, title, content, image, likesCount } = props
-
-  // const userId = useAuthStore((state) => state.user?.id);
-  // const isAuthor = userId === authorId;
+  const { id, authorId, authorName, createdAt, title, content, image, liked, likesCount } = props
 
   const likePost = useLikePost();
-  const deletePost = useDeletePost();
-
   const { showToast } = useToast()
 
   const handleLike = () => {
@@ -27,17 +23,8 @@ export default function PostCard(props: PostCardProps) {
     });
   };
 
-  // const handleDelete = () => {
-  //   if (confirm("Tem certeza que deseja excluir este post?")) {
-  //     deletePost.mutate(id, {
-  //       onSuccess: () => showToast("Post excluído!", "success"),
-  //       onError: (error) => {
-  //         const { message } = getApiError(error);
-  //         showToast(message, "error");
-  //       },
-  //     });
-  //   }
-  // };
+  const hasLike = (liked || likesCount)
+  const hasLikesCounts = (likesCount || 0) > 0 
 
   return (
     <article className="w-160 bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden dark:bg-gray-800 dark:border-gray-700">
@@ -47,9 +34,9 @@ export default function PostCard(props: PostCardProps) {
             <span className="font-bold text-gray-700 dark:text-white truncate">
               {authorName}
             </span>
-            {/* <span className="text-gray-500 truncate">
-              @{author.username}
-            </span> */}
+            <span className="text-gray-500 truncate">
+              @{authorId}
+            </span>
             <span className="text-gray-500 dark:text-gray-600">·</span>
             <span className="text-gray-500 dark:text-gray-600">
               {formatDate(createdAt)}
@@ -77,27 +64,17 @@ export default function PostCard(props: PostCardProps) {
               className={`
                 flex items-center gap-1.5 px-3 py-1.5 rounded-full 
                 hover:bg-red-50 transition-colors
-                ${likesCount ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}
+                ${hasLike ? 'text-red-500' : 'text-gray-500 hover:text-red-500'}
               `}
             >
               <Heart
                 className="w-5 h-5"
-                fill={likesCount ? 'currentColor' : 'none'}
+                fill={liked ? 'currentColor' : 'none'}
               />
-              {(likesCount && likesCount > 0 )&& (
+              {hasLikesCounts && (
                 <span className="text-sm font-medium">{likesCount}</span>
               )}
             </button>
-
-            {/* {isAuthor && (
-              <button
-                onClick={handleDelete}
-                disabled={deletePost.isPending}
-                className="text-sm text-gray-500 hover:text-red-500 transition"
-              >
-                Excluir Post
-              </button>
-            )} */}
           </div>
         </div>
       </div>

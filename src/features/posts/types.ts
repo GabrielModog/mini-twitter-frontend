@@ -12,6 +12,7 @@ export interface IPost {
   createdAt: string
   image: string | null
   likesCount?: number
+  liked?: boolean
 }
 
 export interface CreatePostPayload {

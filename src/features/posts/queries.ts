@@ -64,6 +64,7 @@ export function usePosts(search?: string) {
 
 export function useLikePost() {
   const updatePost = usePostsStore((state) => state.updatePost);
+  const posts = usePostsStore((state) => state.posts)
 
   return useMutation({
     mutationFn: async (postId: number): Promise<LikeResponse> => {
@@ -71,7 +72,9 @@ export function useLikePost() {
       return response.data;
     },
     onSuccess: (data, postId) => {
-      updatePost(postId, { likesCount: data.likes });
+      const post = posts.find(x => x.id === postId)
+      const likesCounts = data.liked ? ((post?.likesCount || 0) + 1) : (post?.likesCount || 0) - 1
+      updatePost(postId, { liked: data.liked, likesCount:  likesCounts});
     },
   });
 }
