@@ -180,12 +180,10 @@ export default function Composer() {
           type="button"
           onClick={handleImageClick}
           disabled={!isExpanded || !isAuthenticated}
-          className="
-            rounded-full 
+          className="rounded-full cursor-pointer
             text-sky-500 hover:bg-sky-50 
             transition focus:outline-none focus:ring-2 focus:ring-sky-300
-            disabled:opacity-50 cursor-pointer
-          "
+            disabled:opacity-50 disabled:cursor-not-allowed"
           aria-label="Adicionar imagem"
         >
           <ImageIcon strokeWidth={1.5} className="h-8 w-8" />
