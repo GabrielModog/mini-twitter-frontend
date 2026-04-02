@@ -179,7 +179,7 @@ export default function Composer() {
         <button
           type="button"
           onClick={handleImageClick}
-          disabled={!isAuthenticated}
+          disabled={!isExpanded || !isAuthenticated}
           className="
             rounded-full 
             text-sky-500 hover:bg-sky-50 
