@@ -2,6 +2,10 @@
 
 Aplicação de microblogging inspirada no Twitter, construída com React, TypeScript e Tailwind CSS.
 
+## Postmortem
+
+- Hotkeys: busca por post e criação de post, componente para mostrar hotkeys.
+
 ## Tecnologias
 
 ### Frontend

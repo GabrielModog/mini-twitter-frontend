@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router';
 import { LogOut, Search, X as XIcon } from 'lucide-react';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 import { useAuthStore } from '@/features/auth/store';
 import { useLogoutMutation } from '@/features/auth/queries';
 import Logo from '@/components/logo';
+import Hotkey from '@/components/hotkey';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -24,9 +26,22 @@ export function Layout({ children }: LayoutProps) {
 
 function Navbar() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [commandLabel, setCommandLabel] = useState<string>('ctrl+k')
   const { isAuthenticated } = useAuthStore();
   const logout = useLogoutMutation();
   const navigate = useNavigate();
+
+  const searchInputRef = useRef<HTMLInputElement | null>(null)
+
+  function focusOnSearchInput() {
+    if (!searchInputRef) return
+    searchInputRef.current?.focus()
+  }
+
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value)
+    setCommandLabel('ctrl+x')
+  }
 
   const handleSearch = (e: React.ChangeEvent) => {
     e.preventDefault();
@@ -35,12 +50,16 @@ function Navbar() {
 
   const handleClearSearch = () => {
     setSearchQuery('');
+    setCommandLabel('ctrl+k')
     navigate('/posts');
   };
 
   const handleLogout = () => {
     logout.mutate();
   };
+
+  useHotkeys('ctrl+k', focusOnSearchInput, { preventDefault: true })
+  useHotkeys('ctrl+x', handleClearSearch, { preventDefault: true })
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -62,7 +81,8 @@ function Navbar() {
                   <input
                     type="search"
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    ref={searchInputRef}
+                    onChange={handleSearchInputChange}
                     placeholder="Buscar por post..."
                     className="
                       w-full h-10 pl-11 text-sm
@@ -74,15 +94,18 @@ function Navbar() {
                       transition
                     "
                   />
-                  {searchQuery && (
-                    <button
-                      type="button"
-                      onClick={handleClearSearch}
-                      className="absolute inset-y-0 right-0 pr-4 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
-                    >
-                      <XIcon className="w-4 h-4" />
-                    </button>
-                  )}
+                  <div className="absolute top-2 right-2 flex flex-row">
+                    <Hotkey label={commandLabel} />
+                    {searchQuery && (
+                      <button
+                        type="button"
+                        onClick={handleClearSearch}
+                        className="absolute inset-y-0 right-10 pr-4 flex items-center text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
+                      >
+                        <XIcon className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
                 </form>
               </div>
 

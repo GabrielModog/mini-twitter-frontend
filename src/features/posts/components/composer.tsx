@@ -13,6 +13,8 @@ import { useToast } from '@/contexts/toast-context';
 import { getApiError } from '@/lib/api-client';
 import { Input } from '@/components/input';
 import { useAuthStore } from '@/features/auth/store';
+import Hotkey from '@/components/hotkey';
+import { useHotkeys } from 'react-hotkeys-hook';
 
 export default function Composer() {
   const isAuthenticated = useAuthStore(state => state.isAuthenticated)
@@ -21,10 +23,11 @@ export default function Composer() {
 
   const fileInputRef = useRef<HTMLInputElement>(null)
   const titleInputRef = useRef<HTMLInputElement>(null)
+  const textInputRef = useRef<HTMLTextAreaElement>(null)
 
   const [isExpanded, setIsExpanded] = useState(false)
 
-  const { register, handleSubmit, setValue, reset, watch, formState: { errors } } = useForm<PostFormType>({
+  const { register, handleSubmit, setValue, reset, watch, setFocus, formState: { errors } } = useForm<PostFormType>({
     resolver: zodResolver(postFormSchema),
     defaultValues: {
       title: "",
@@ -64,9 +67,7 @@ export default function Composer() {
   const handleExpand = () => {
     if (!isAuthenticated) return
     setIsExpanded(true)
-    setTimeout(() => {
-      titleInputRef.current?.focus()
-    }, 0)
+    setTimeout(() => { setFocus('content') }, 0)
   }
 
   const handleBlur = (e: React.FocusEvent<HTMLFormElement>) => {
@@ -78,6 +79,12 @@ export default function Composer() {
       }
     }
   }
+
+  const handleCancelPost = () => {
+    handleRemoveImage()
+    setIsExpanded(false)
+    reset()
+  } 
 
   function onSubmit(data: PostFormType) {
     createPost.mutate(
@@ -97,6 +104,9 @@ export default function Composer() {
       }
     )
   }
+
+  useHotkeys('ctrl+c', handleExpand, { preventDefault: true })
+  useHotkeys('esc', handleCancelPost)
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} onBlur={handleBlur} className="w-160 min-height-40.6 bg-white border border-gray-200 rounded-xl shadow-lg shadow-gray-200 dark:border-gray-700 dark:bg-gray-800 dark:shadow-gray-800">
@@ -174,22 +184,26 @@ export default function Composer() {
             rounded-full 
             text-sky-500 hover:bg-sky-50 
             transition focus:outline-none focus:ring-2 focus:ring-sky-300
-            disabled:opacity-50
+            disabled:opacity-50 cursor-pointer
           "
           aria-label="Adicionar imagem"
         >
           <ImageIcon strokeWidth={1.5} className="h-8 w-8" />
         </button>
 
-        <Button
-          type="submit"
-          label="Postar"
-          disabled={isButtonDisabled}
-          loading={createPost.isPending}
-          loadingMessage="Postando..."
-          size="sm"
-          variant="primary"
-        />
+        <div className="flex flex-row items-center gap-2">
+          <Hotkey label="ctrl+c" />
+
+          <Button
+            type="submit"
+            label="Postar"
+            disabled={isButtonDisabled}
+            loading={createPost.isPending}
+            loadingMessage="Postando..."
+            size="sm"
+            variant="primary"
+          />
+        </div>
       </div>
     </form>
   );
